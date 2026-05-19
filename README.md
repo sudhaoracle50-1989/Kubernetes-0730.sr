@@ -44,39 +44,7 @@ This repository contains:
 
 # 🏗️ Kubernetes Architecture
 
-<div align="center">
-
-```text
-                         ┌──────────────────────┐
-                         │     kubectl CLI      │
-                         └──────────┬───────────┘
-                                    │
-                                    ▼
-                    ┌────────────────────────────────┐
-                    │         API SERVER             │
-                    └────────────────────────────────┘
-                           │      │       │
-         ┌─────────────────┘      │       └─────────────────┐
-         ▼                        ▼                         ▼
-
-┌────────────────┐    ┌────────────────┐      ┌────────────────┐
-│   ETCD         │    │ Scheduler      │      │ Controller Mgr │
-└────────────────┘    └────────────────┘      └────────────────┘
-
-────────────────────────────────────────────────────────────────
-
-               Worker Node-1              Worker Node-2
-
-        ┌──────────────────────┐   ┌──────────────────────┐
-        │ kubelet              │   │ kubelet              │
-        │ kube-proxy           │   │ kube-proxy           │
-        │ Container Runtime    │   │ Container Runtime    │
-        │ Pods                 │   │ Pods                 │
-        └──────────────────────┘   └──────────────────────┘
-```
-
-</div>
-
+![Kubernetes Architecture](K8S.png)
 ---
 
 # 📂 Repository Structure
