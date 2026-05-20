@@ -319,30 +319,30 @@ kubectl apply -f auth.yml
 <div align="center">
 
 ```text
-                                                           IAM User / Kubernetes User
-                                                                         │
-                                                                         ▼
-                                                                  Authentication
-                                                                         │
-                                                                         ▼
-                                                                      API Server
-                                                                         │
-                                                                         ▼
-                                                                     RBAC Check
-                                                                         │
-                                                   ┌─────────────────────┴─────────────────────┐
-                                                   ▼                                           ▼
-                                          
-                                                Role                                      ClusterRole
-                                                   │                                           │
-                                                   ▼                                           ▼
-                                          
-                                             RoleBinding                              ClusterRoleBinding
-                                                   │                                           │
-                                                   └───────────────────────────────────────────┘
-                                                                         │
-                                                                         ▼
-                                                                  Access Granted
+                                                             IAM User / Kubernetes User
+                                                                           │
+                                                                           ▼
+                                                                    Authentication
+                                                                           │
+                                                                           ▼
+                                                                        API Server
+                                                                           │
+                                                                           ▼
+                                                                       RBAC Check
+                                                                           │
+                                                             ┌─────────────────────┴─────────────────────┐
+                                                             ▼                                           ▼
+                                                    
+                                                          Role                                      ClusterRole
+                                                             │                                           │
+                                                             ▼                                           ▼
+                                                    
+                                                       RoleBinding                              ClusterRoleBinding
+                                                             │                                           │
+                                                             └───────────────────────────────────────────┘
+                                                                                   │
+                                                                                   ▼
+                                                                            Access Granted
 ```
 
 </div>
