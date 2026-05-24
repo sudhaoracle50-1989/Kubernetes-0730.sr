@@ -1,5 +1,7 @@
 # 🛒 Kubernetes E-Commerce Microservices DevOps Project
-
+<p align="center">
+  <img src="microservice.png" alt="Microservices Architecture" width="100%">
+</p>
 ## 📌 Project Overview
 
 This project is a complete Cloud Native E-Commerce Microservices Application built using modern DevOps tools and Kubernetes ecosystem technologies.
