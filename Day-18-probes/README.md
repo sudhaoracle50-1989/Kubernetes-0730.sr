@@ -63,6 +63,17 @@ If the probe fails:
 - Kubernetes restarts the container automatically
 
 ---
+# If readinessProbe fails:
+Pod is marked Not Ready
+Traffic stops being routed to the Pod
+Service removes the Pod from endpoints
+Container is NOT restarted
+livenessProbe
+If livenessProbe fails:
+Kubernetes assumes the container is unhealthy
+Container is restarted
+If restarts continue repeatedly:
+Pod may enter CrashLoopBackOff
 
 # Liveness Probe Workflow
 
@@ -214,6 +225,11 @@ Until startup probe succeeds:
 - Liveness and Readiness probes are disabled
 
 ---
+
+# While startupProbe is failing:
+Kubernetes disables liveness and readiness probes
+If the startupProbe never succeeds:
+Kubernetes restarts the container
 
 # Example — Startup Probe
 
@@ -396,3 +412,75 @@ The pod remains running but is removed from service endpoints.
 Kubernetes restarts the container automatically.
 
 ---
+# Kubernetes Probe Failure Flow Architecture
+
+```text
+                    +----------------------+
+                    |   Container Starts   |
+                    +----------+-----------+
+                               |
+                               v
+                    +----------------------+
+                    |    startupProbe      |
+                    |      Health Check    |
+                    +----------+-----------+
+                               |
+                 +-------------+-------------+
+                 |                           |
+                 | Success                   | Failed
+                 v                           v
+        +-------------------+      +----------------------+
+        | Enable Readiness  |      | Restart Container    |
+        | & Liveness Probe  |      |                      |
+        +---------+---------+      +----------+-----------+
+                  |                           |
+                  |                           |
+                  v                           |
+        +-------------------+                 |
+        | readinessProbe    |                 |
+        |   Health Check    |                 |
+        +---------+---------+                 |
+                  |                           |
+        +---------+---------+                 |
+        |                   |                 |
+        | Success           | Failed          |
+        v                   v                 |
++----------------+   +------------------+     |
+| Receive        |   | Stop Traffic     |     |
+| Application    |   | to Pod Only      |     |
+| Traffic         |   | Pod Still Running|     |
++--------+-------+   +------------------+     |
+         |                                      |
+         v                                      |
++-------------------+                           |
+|  livenessProbe    |                           |
+|   Health Check    |                           |
++---------+---------+                           |
+          |                                     |
+   +------+-------+                             |
+   |              |                             |
+   | Success      | Failed                      |
+   v              v                             |
++--------+   +------------------+               |
+| Normal |   | Restart Container|<--------------+
+| Running|   +---------+--------+
++--------+             |
+                       |
+                       v
+            +----------------------+
+            | Multiple Restarts    |
+            | Continuous Failures  |
+            +----------+-----------+
+                       |
+                       v
+            +----------------------+
+            |  CrashLoopBackOff    |
+            +----------------------+
+```
+# fLOW 
+startupProbe fail -> restart container
+readinessProbe fail -> stop traffic only
+livenessProbe fail -> restart container
+continuous restart -> CrashLoopBackOff
+---
+
